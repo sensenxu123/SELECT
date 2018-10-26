@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.TestDao">
+
+    <!-- 查询总条数 -->
+    <select id="getByid"
+            resultType="pojo.User">
+        select * from "usertable"
+
+    </select>
+    <select id="getByXgh"
+            resultType="pojo.CardFlow">
+        select * from "USR_ZSJ"."CARDFLOW" WHERE XGH='16035049'
+
+    </select>
+
+
+</mapper>

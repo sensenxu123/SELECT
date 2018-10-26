@@ -1,0 +1,14 @@
+# IntelliJ
+*.iml
+.idea/
+out/
+web/WEB-INF/classes/
+
+# Eclipse
+.classpath
+.project
+.externalToolBuilders/
+.metadata
+.settings
+
+src/db.properties
