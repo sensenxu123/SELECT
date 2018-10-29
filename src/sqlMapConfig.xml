@@ -6,5 +6,7 @@
         <typeAliases>
             <package name="pojo" ></package>
         </typeAliases>
-
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 </configuration>
