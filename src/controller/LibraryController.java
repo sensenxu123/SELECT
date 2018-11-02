@@ -1,11 +1,14 @@
 package controller;
 
 import com.github.pagehelper.PageInfo;
+import net.sf.json.util.JSONUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pojo.*;
 import service.LibraryService;
+import utils.JsonUtils;
 import utils.ResultUtil;
 
 import java.util.List;
@@ -24,13 +27,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(BookUser bookUser) {
-        BookUser user = libraryService.login(bookUser);
-
-        if (user == null) {
-            return ResultUtil.error("用户名或密码不正确");
+    public String login(BookUser bookUser,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            BookUser user = libraryService.login(bookUser);
+            if (user == null) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("用户名或密码不正确")) + ")";
+            }
+            return  callback + "(" + JsonUtils.objectToJson(JsonUtils.objectToJson(ResultUtil.success("登陆成功",user))) + ")";
         }
-        return ResultUtil.success("登陆成功", user);
+        return null;
     }
 
     /**
@@ -41,13 +46,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result currentBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page) {
-        PageInfo<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH, page);
-
-        if (list.getList().size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String currentBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            PageInfo<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH, page);
+            if (list.getList().size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
         }
-        return ResultUtil.error("没有正在看的书呢,快去找本看看吧!");
+        return null;
     }
 
     /**
@@ -58,12 +65,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.POST)
     @ResponseBody
-    public Result historyBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page) {
-        PageInfo<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH, page);
-        if (list.getList().size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String historyBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            PageInfo<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH, page);
+            if (list.getList().size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
         }
-        return ResultUtil.error("找不到借过的书?!");
+        return null;
     }
 
     /**
@@ -74,13 +84,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/findBookStatus", method = RequestMethod.GET)
     @ResponseBody
-    public Result findBookStatus(@RequestParam("SSH") String SSH) {
-        List<Book> list = libraryService.findBookStatus(SSH);
-
-        if (list.size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String findBookStatus(@RequestParam("SSH") String SSH,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            List<Book> list = libraryService.findBookStatus(SSH);
+            if (list.size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";
         }
-        return ResultUtil.error("书本掉到代码池里去了...");
+        return null;
     }
 
     /**
@@ -91,12 +103,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/findBookByName/{TM}/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result findBookByName(@PathVariable("TM") String TM,@PathVariable(value = "page") Integer page) {
-        PageInfo<Book> list = libraryService.findBookByName(TM, page);
-        if (list.getList().size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String findBookByName(@PathVariable("TM") String TM,@PathVariable(value = "page") Integer page,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            PageInfo<Book> list = libraryService.findBookByName(TM, page);
+            if (list.getList().size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return ResultUtil.error("找不到想要的书...");
+        return null;
     }
 
     /**
@@ -107,12 +122,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/findBookBySSH", method = RequestMethod.GET)
     @ResponseBody
-    public Result findBookBySSH(@RequestParam("SSH") String SSH) {
-        List<Book> list = libraryService.findBookBySSH(SSH);
-        if (list.size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String findBookBySSH(@RequestParam("SSH") String SSH,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            List<Book> list = libraryService.findBookBySSH(SSH);
+            if (list.size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return ResultUtil.error("找不到想要的书...");
+        return null;
     }
 
     /**
@@ -122,12 +140,15 @@ public class LibraryController {
      */
     @RequestMapping(value = "/topRanking/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result topRanking(@PathVariable(value = "page") Integer page) {
-        PageInfo<BooksRanking> list = libraryService.topRanking(page);
-        if (list.getList().size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String topRanking(@PathVariable(value = "page") Integer page,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            PageInfo<BooksRanking> list = libraryService.topRanking(page);
+            if (list.getList().size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return ResultUtil.error("查询失败了...");
+        return null;
     }
 
     /**
@@ -138,11 +159,14 @@ public class LibraryController {
      */
     @RequestMapping(value = "/categoryRanking/{FLH}/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result categoryRanking(@PathVariable("FLH") String FLH, @PathVariable(value = "page") Integer page) {
-        PageInfo<BooksRanking> list = libraryService.categoryRanking(FLH, page);
-        if (list.getList().size() != 0) {
-            return ResultUtil.success("查询成功", list);
+    public String categoryRanking(@PathVariable("FLH") String FLH, @PathVariable(value = "page") Integer page,String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            PageInfo<BooksRanking> list = libraryService.categoryRanking(FLH, page);
+            if (list.getList().size() != 0) {
+                return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
+            }
+            return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return ResultUtil.error("查询失败了...");
+        return null;
     }
 }
