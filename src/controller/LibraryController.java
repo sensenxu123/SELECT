@@ -12,7 +12,6 @@ import utils.HttpClientUtil;
 import utils.JsonUtils;
 import utils.ResultUtil;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -27,7 +26,7 @@ public class LibraryController {
      * @param bookUser
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/login", produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String login(BookUser bookUser,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -46,7 +45,7 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/currentborrow/{XH}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String currentBorrow(@PathVariable("XH") String SFRZH,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -65,7 +64,7 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/historyborrow/{XH}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String historyBorrow(@PathVariable("XH") String SFRZH,String callback) {
         if (StringUtils.isNotBlank(callback)) {

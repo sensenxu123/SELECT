@@ -3,12 +3,10 @@ package pojo;
 import java.io.Serializable;
 
 /**
- *   科目实体
- *          用于封装，课程的一些信息
+ *   学生的课程表
  * */
 public class Subject implements Serializable,Comparable<Subject> {
 
-    private    String    XSXM    ;     //学生姓名
     private    String    KCMC    ;     //课程名称
     private    String    ZZT     ;     //上课周次
     private    String    XQJ     ;      //星期几
@@ -24,8 +22,7 @@ public class Subject implements Serializable,Comparable<Subject> {
     public Subject() {
     }
 
-    public Subject(String XSXM, String KCMC, String ZZT, String XQJ, String KSJC, String JSJC, String KSSJ, String JSXM, String JSGH, String SKJSMC, String SKJSDM,String CZLX) {
-        this.XSXM = XSXM;
+    public Subject( String KCMC, String ZZT, String XQJ, String KSJC, String JSJC, String KSSJ, String JSXM, String JSGH, String SKJSMC, String SKJSDM,String CZLX) {
         this.KCMC = KCMC;
         this.ZZT = ZZT;
         this.XQJ = XQJ;
@@ -45,14 +42,6 @@ public class Subject implements Serializable,Comparable<Subject> {
 
     public void setCZLX(String CZLX) {
         this.CZLX = CZLX;
-    }
-
-    public String getXSXM() {
-        return XSXM;
-    }
-
-    public void setXSXM(String XSXM) {
-        this.XSXM = XSXM;
     }
 
     public String getKCMC() {
@@ -172,8 +161,7 @@ public class Subject implements Serializable,Comparable<Subject> {
     @Override
     public String toString() {
         return "Subject{" +
-                "XSXM='" + XSXM + '\'' +
-                ", KCMC='" + KCMC + '\'' +
+                "KCMC='" + KCMC + '\'' +
                 ", ZZT='" + ZZT + '\'' +
                 ", XQJ='" + XQJ + '\'' +
                 ", KSJC='" + KSJC + '\'' +
