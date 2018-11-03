@@ -40,7 +40,7 @@
         <result property="CBSMC" column="CBSMC"/>
         <result property="CBRQ" column="CBRQ"/>
         <result property="DYZZ" column="DYZZ"/>
-        <result property="GCDDM" column="GCDDM"/>
+        <result property="GCDMC" column="GCDMC"/>
         <result property="JG" column="JG"/>
         <result property="SSH" column="SSH"/>
         <result property="WXLX" column="WXLX"/>
