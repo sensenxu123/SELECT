@@ -19,27 +19,35 @@ public class SelectServiceImpl implements SelectService {
     @Override
     public CardFlow selectYe(String xgh) {
         CardFlow cf =selectDao.selectYe(xgh);
-        String ye = cf.getYE();
-        StringBuilder sb = new StringBuilder(ye);//构造一个StringBuilder对象
-        sb.insert(ye.length()-2, ".");//插入小数点
-        cf.setYE(sb.toString());
+        String YE = cf.getYE();
+        float newYe = Integer.parseInt(YE)/100.00f;
+        cf.setYE(newYe+"");
 //        return new StringBuffer(ye).insert(2,".").toString();
         return cf;
     }
 
-    @Override
-    public List<Record> selectRecord(String xgh) {
-        return selectDao.selectRecord(xgh);
-    }
+
 
     @Override
     public List<Record> selectByPageAndSelections(String xgh) {
-        return selectDao.selectByPageAndSelections(xgh);
+        List<Record> list = selectDao.selectByPageAndSelections(xgh);
+        for(Record x:list){
+            String YE = x.getJYE();
+            float newYe = Integer.parseInt(YE)/100.00f;
+            x.setJYE(newYe+"");
+        }
+        return list;
     }
 
     @Override
     public List<Record> selectRecoredBytime(String mintime, String maxtime, String xgh) {
-        return selectDao.selectRecoredBytime(mintime,maxtime,xgh);
+        List<Record> list =  selectDao.selectRecoredBytime(mintime,maxtime,xgh);
+        for(Record x:list){
+            String YE = x.getJYE();
+            float newYe = Integer.parseInt(YE)/100.00f;
+            x.setJYE(newYe+"");
+        }
+        return list;
     }
 
     @Override
