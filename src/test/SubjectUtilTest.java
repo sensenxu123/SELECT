@@ -73,20 +73,20 @@ public class SubjectUtilTest {
 
         //创建list
         subjects = new ArrayList<>();
-        subjects.add(new Subject("","1","1","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","2","1","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","2","1","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","2","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","2","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","2","2","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","2","2","1","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","2","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","2","","","1","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","1","","","2","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","1","","","2","","1","1"));
-        subjects.add(new Subject("","1","1","1","1","1","","","1","","2","1"));
-        subjects.add(new Subject("","1","1","1","1","1","","","1","","2","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("2","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("2","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("1","2","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("1","2","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("1","1","2","2","1","","","1","","1","1"));
+        subjects.add(new Subject("1","1","2","2","1","","","1","","1","1"));
+        subjects.add(new Subject("1","1","1","1","2","","","1","","1","1"));
+        subjects.add(new Subject("1","1","1","1","2","","","1","","1","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","2","","1","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","2","","1","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","1","","2","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","1","","2","1"));
         //
         List<Subject> nodup1 = SubjectUtil.nodup(subjects);
 
@@ -97,14 +97,14 @@ public class SubjectUtilTest {
     public void testRepate() {
 
         List<Subject> subjects = new ArrayList<>();
-        subjects.add(new Subject("","1","1","1","1","1","","","1","","1","1"));
-        subjects.add(new Subject("","2","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("1","1","1","1","1","","","1","","1","1"));
+        subjects.add(new Subject("2","1","1","1","1","","","1","","1","1"));
 
-        Subject subject = new Subject("", "2", "1", "1", "1", "1", "", "", "1", "", "1", "1");
+        Subject subject = new Subject("2", "1", "1", "1", "1", "", "", "1", "", "1", "1");
         int repeat = SubjectUtil.repeat(subjects, subject);
         Assert.assertEquals(1,repeat);
 
-        subject = new Subject("", "3", "1", "1", "1", "1", "", "", "1", "", "1", "1");
+        subject = new Subject("3", "1", "1", "1", "1", "", "", "1", "", "1", "1");
         repeat = SubjectUtil.repeat(subjects, subject);
         Assert.assertEquals(-1,repeat);
     }
