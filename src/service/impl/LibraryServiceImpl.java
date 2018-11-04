@@ -34,15 +34,23 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<CurrentBorrow> getCurrentBorrow(String SFRZH) {
+    public PageInfo<CurrentBorrow> getCurrentBorrow(String SFRZH, Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
+        PageHelper.startPage(startNum, 8);
         List<CurrentBorrow> list = libraryDao.findCurrentBorrowBySFRZH(SFRZH);
-        return list;
+        PageInfo<CurrentBorrow> info = new PageInfo<>(list, 5);
+        return info;
     }
 
     @Override
-    public List<HistoryBorrow> getHistoryBorrow(String SFRZH) {
+    public PageInfo<HistoryBorrow> getHistoryBorrow(String SFRZH, Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
+        PageHelper.startPage(startNum, 8);
         List<HistoryBorrow> list = libraryDao.findHistoryBorrowBySFRZH(SFRZH);
-        return list;
+        PageInfo<HistoryBorrow> info = new PageInfo<>(list, 5);
+        return info;
     }
 
     @Override
@@ -53,6 +61,8 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public PageInfo<Book> findBookByName(String TM, Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
         //模糊查询 包括全部大写字符串 全部小写字符串
         String upper = TM.toUpperCase();
         String lower = TM.toLowerCase();

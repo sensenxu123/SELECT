@@ -39,12 +39,12 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.GET)
+    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result currentBorrow(@PathVariable("XH") String SFRZH) {
-        List<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH);
+    public Result currentBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page) {
+        PageInfo<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH, page);
 
-        if (list.size() != 0) {
+        if (list.getList().size() != 0) {
             return ResultUtil.success("查询成功", list);
         }
         return ResultUtil.error("没有正在看的书呢,快去找本看看吧!");
@@ -56,11 +56,11 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.POST)
+    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.POST)
     @ResponseBody
-    public Result historyBorrow(@PathVariable("XH") String SFRZH) {
-        List<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH);
-        if (list.size() != 0) {
+    public Result historyBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page) {
+        PageInfo<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH, page);
+        if (list.getList().size() != 0) {
             return ResultUtil.success("查询成功", list);
         }
         return ResultUtil.error("找不到借过的书?!");

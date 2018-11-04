@@ -9,9 +9,9 @@ public interface LibraryService {
 
     BookUser login(BookUser bookUser);
 
-    List<CurrentBorrow> getCurrentBorrow(String SFRZH);
+    PageInfo<CurrentBorrow> getCurrentBorrow(String SFRZH, Integer startNum);
 
-    List<HistoryBorrow> getHistoryBorrow(String SFRZH);
+    PageInfo<HistoryBorrow> getHistoryBorrow(String SFRZH, Integer startNum);
 
     List<Book> findBookStatus(String SSH);
 
