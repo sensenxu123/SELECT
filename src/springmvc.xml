@@ -8,14 +8,12 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <!-- 配置Controller扫描 -->
     <context:component-scan base-package="controller" />
-
     <!-- 配置注解驱动 -->
     <!--这行代码的意义在于可以使用注解@Transactional-->
     <mvc:annotation-driven  />
     <!--对静态资源放行/css/metisMenu.min.css-->
-    <!--<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>-->
-    <!--<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>-->
-    <!--<mvc:resources location="/fonts/" mapping="/fonts/**"></mvc:resources>-->
+    <mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+    <mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
 
     <!-- 配置视图解析器 -->
     <bean	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -30,4 +28,5 @@
         <property name="maxInMemorySize" value="20971502"></property>
         <property name="maxUploadSize" value="20971502"></property>
     </bean>
+
 </beans>

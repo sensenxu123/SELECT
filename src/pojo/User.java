@@ -1,24 +1,27 @@
 package pojo;
 
 public class User {
-    private Integer id;
-    private String username;
+    //学工号
+    private String XGH;
+    //身份证
+    private String SFZ;
+    //密码（截取身份证后六位）
     private String password;
 
-    public Integer getId() {
-        return id;
+    public String getXGH() {
+        return XGH;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setXGH(String XGH) {
+        this.XGH = XGH;
     }
 
-    public String getUsername() {
-        return username;
+    public String getSFZ() {
+        return SFZ;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSFZ(String SFZ) {
+        this.SFZ = SFZ;
     }
 
     public String getPassword() {
@@ -27,14 +30,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

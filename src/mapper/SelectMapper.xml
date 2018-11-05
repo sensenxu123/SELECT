@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SelectDao">
+
+
+
+
+
+    <!-- 查询总条数 -->
+    <select id="selectYe"
+            resultType="pojo.CardFlow" >
+    select * from
+    (select YE,XGH,JYSJ,XM from "USR_ZSJ"."CARDFLOW"  order by JYSJ desc)
+    where  XGH=#{xgh}
+    AND rownum=1
+
+    </select>
+
+    <!--默认查询当前月的消费明细-->
+
+    <select id="selectRecord"
+            resultType="pojo.Record" >
+    SELECT
+	  JYLX,
+	  JYSJ,
+	  SHMC,
+	  JYE
+    FROM
+	  "USR_ZSJ"."CARDFLOW"
+    WHERE
+	  to_char( to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' ), 'yyyy-mm' ) = to_char( SYSDATE, 'yyyy-mm' )
+	AND XGH=#{xgh} order by cjsj desc
+    </select>
+
+    <select id="selectByPageAndSelections"
+            resultType="pojo.Record" >
+    SELECT
+	  JYLX,
+	  JYSJ,
+	  SHMC,
+	  JYE
+    FROM
+	  "USR_ZSJ"."CARDFLOW"
+    WHERE
+	  to_char( to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' ), 'yyyy-mm' ) = to_char( SYSDATE, 'yyyy-mm' )
+	AND XGH=#{xgh} order by cjsj desc
+    </select>
+
+
+    <!--根据时间来查明细-->
+    <select id="selectRecoredBytime"
+            resultType="pojo.Record" >
+        SELECT
+        JYLX,
+        JYSJ,
+        SHMC,
+        JYE
+        FROM
+        "USR_ZSJ"."CARDFLOW"
+        WHERE
+        TO_DATE(CJSJ,'yyyy-MM-dd hh24:mi:ss')
+        &gt;=TO_DATE( '${mintime} 00:00:00', 'yyyy-MM-dd hh24:mi:ss' )
+        AND TO_DATE(CJSJ,'yyyy-MM-dd hh24:mi:ss')
+        &lt;=TO_DATE( '${maxtime} 23:59:59', 'yyyy-MM-dd hh24:mi:ss' )
+        and xgh=#{xgh}
+        ORDER BY CJSJ desc
+    </select>
+
+    <select id="checkLogin"
+            resultType="pojo.User" >
+       select XGH,SFZ FROM "USR_ZSJ"."CARDINFO" where XGH=#{xgh}
+    </select>
+
+</mapper>
