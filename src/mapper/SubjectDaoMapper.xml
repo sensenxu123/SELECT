@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SubjectDao">
+
+    <!-- 根据学号  与  学期  查询 课表    :  注意:oracle  需要指定  表空间 -->
+    <select id="findSubjetByXHAndXQDM"    resultType="pojo.Subject">
+        SELECT
+            XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM
+        FROM
+          "USR_ZSJ"."T_KBAP"  kbap,
+          ( SELECT XKKH, KCMC, XSXM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
+       WHERE
+	      KCXH = XKKH
+    </select>
+
+
+    <!--  查询学期 -->
+    <select id="findXQDM" resultType="String" >
+        SELECT DISTINCT
+            XQDM
+        FROM
+            "USR_ZSJ"."XSXKXX"
+    </select>
+
+</mapper>
