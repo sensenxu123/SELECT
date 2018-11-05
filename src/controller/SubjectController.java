@@ -19,7 +19,7 @@ public class SubjectController {
 
 
     @RequestMapping("/findSubject")
-    public  Result findSubject(@RequestParam(defaultValue = "16038116") String XH, @RequestParam(defaultValue = "2018-20191") String XQDM){
+    public  Result findSubject(@RequestParam(defaultValue = "") String XH, @RequestParam(defaultValue = "2018-20191") String XQDM){
 
         Result result = null;
         try {
