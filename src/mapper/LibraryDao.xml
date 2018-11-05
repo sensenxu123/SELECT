@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.LibraryDao">
+    <!--获取用户信息-->
+    <select id="getUserInfoBySFRZH" parameterType="String" resultType="BookUser">
+        SELECT WID,SFRZH,DZXM,XBDM,DWMC,DZLXDM,BZRQ,YJCS,LJCC,QKJE,ZJZT,SFID
+        FROM "USR_ZSJ"."T_TS_DZ"
+        WHERE SFRZH= #{SFRZH}
+    </select>
+
+    <!--获取用户当前借阅-->
+    <select id="findCurrentBorrowBySFRZH" parameterType="String" resultType="CurrentBorrow">
+        SELECT TSTM,TSMC,DZTM,SFRZH,JSRQ,YHRQ,XJBS,CLRQ,XJRQ,DZXM,SSH
+        FROM "USR_ZSJ"."T_TS_JY"
+        WHERE SFRZH= #{SFRZH}
+        ORDER BY JSRQ DESC
+    </select>
+
+    <!--获取用户历史借阅-->
+    <select id="findHistoryBorrowBySFRZH" parameterType="String" resultType="HistoryBorrow">
+        SELECT WID,TSTM,TSMC,SSH,DZTM,SFRZH,DZXM,JSRQ,HSRQ,XJBS
+        FROM "USR_ZSJ"."T_TS_JYLS"
+        WHERE SFRZH= #{SFRZH}
+        ORDER BY JSRQ DESC
+    </select>
+
+    <!--书本被他人借阅状态-->
+    <resultMap id="userBookListMap" type="Book">
+        <result property="WID" column="WID"/>
+        <result property="TSTXM" column="TSTXM"/>
+        <result property="DJH" column="DJH"/>
+        <result property="FLH" column="FLH"/>
+        <result property="GCDM" column="GCDM"/>
+        <result property="RDRQ" column="RDRQ"/>
+        <result property="TSZTDM" column="TSZTDM"/>
+        <result property="ISBN" column="ISBN"/>
+        <result property="TM" column="TM"/>
+        <result property="CBSMC" column="CBSMC"/>
+        <result property="CBRQ" column="CBRQ"/>
+        <result property="DYZZ" column="DYZZ"/>
+        <result property="GCDDM" column="GCDDM"/>
+        <result property="JG" column="JG"/>
+        <result property="SSH" column="SSH"/>
+        <result property="WXLX" column="WXLX"/>
+        <association property="userInfo" javaType="CurrentBorrow" >
+            <result property="TSTM" column="TSTM"/>
+            <result property="TSMC" column="TSMC"/>
+            <result property="DZTM" column="DZTM"/>
+            <result property="SFRZH" column="SFRZH"/>
+            <result property="JSRQ" column="JSRQ"/>
+            <result property="YHRQ" column="YHRQ"/>
+            <result property="XJBS" column="XJBS"/>
+            <result property="CLRQ" column="CLRQ"/>
+            <result property="XJRQ" column="XJRQ"/>
+            <result property="DZXM" column="DZXM"/>
+        </association>
+    </resultMap>
+
+    <select id="findOneBookBorrowStatus" parameterType="String" resultMap="userBookListMap" >
+        SELECT t.WID,t.TSTXM,t.DJH,t.FLH,t.GCDM,t.RDRQ,t.TSZTDM,t.ISBN,t.TM,t.CBSMC,t.CBRQ,t.DYZZ,
+        t.GCDMC,t.JG,t.SSH,t.WXLX,j.TSTM,j.TSMC,j.DZTM,j.SFRZH,j.JSRQ,j.YHRQ,j.XJBS,j.CLRQ,j.XJRQ,j.DZXM
+        FROM (select * from "USR_ZSJ"."T_TS" where SSH= #{SSH}) t
+        LEFT JOIN "USR_ZSJ"."T_TS_JY" j
+        ON TSTXM=j.TSTM
+    </select>
+
+    <!--按姓名查找图书,通过名称模糊查询-->
+    <select id="findBookByName" parameterType="String" resultType="Book">
+        SELECT DISTINCT TM,DYZZ,SSH,CBSMC,ISBN FROM "USR_ZSJ"."T_TS" WHERE instr(TM, #{origin}) > 0  or  instr(TM, #{upper}) > 0  or instr(TM, #{lower}) > 0
+    </select>
+
+    <!--查看具体一本书，通过SSH精确查询-->
+    <select id="findBookBySSH" parameterType="String" resultType="Book">
+        SELECT WID,TSTXM,DJH,FLH,GCDM,RDRQ,TSZTDM,ISBN,TM,CBSMC,CBRQ,DYZZ,GCDMC,JG,SSH,WXLX FROM "USR_ZSJ"."T_TS" WHERE SSH = #{SSH}
+    </select>
+    
+    <!--最近3个月热门排行-->
+    <!--现在已经废弃-->
+    <select id="topRanking" resultType="BooksRanking">
+        SELECT
+        a.TSMC as TM,a.SSH,nvl(a.a,0)+nvl(b.b,0) AS YJCS
+        FROM
+        ( SELECT TSMC,SSH,count(*) as a FROM "USR_ZSJ"."T_TS_JYLS" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd') FROM dual) GROUP BY TSMC,SSH ORDER BY count(*) desc ) a
+        FULL JOIN
+        ( SELECT TSMC,SSH,count(*) as b FROM "USR_ZSJ"."T_TS_JY" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd') FROM dual) GROUP BY TSMC,SSH ORDER BY count(*) desc ) b
+        on
+        a.TSMC = b.TSMC
+        order by yjcs DESC
+    </select>
+
+    <!--查询前50条借阅排行 可按照分类 或 默认全局结束次数排序-->
+    <!--这是开发者干掉半条命写出来的SQL-->
+    <!--请接好!并敬重!-->
+    <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
+        SELECT * FROM
+        (
+        SELECT t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
+        FROM "USR_ZSJ"."T_TS" t
+        INNER JOIN
+        (
+        SELECT
+        a.TSMC as TM,a.SSH,nvl(a.a,0)+nvl(b.b,0) AS YJCS
+        FROM
+        ( SELECT TSMC,SSH,count(*) as a FROM "USR_ZSJ"."T_TS_JYLS" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd') FROM dual) GROUP BY TSMC,SSH ORDER BY count(*) desc ) a
+        FULL JOIN
+        ( SELECT TSMC,SSH,count(*) as b FROM "USR_ZSJ"."T_TS_JY" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd') FROM dual) GROUP BY TSMC,SSH ORDER BY count(*) desc ) b
+        on
+        a.TSMC = b.TSMC
+        order by yjcs DESC
+        ) c
+        ON
+        <if test="FLH!=null">
+            t.FLH= #{FLH} AND
+        </if>
+        c.SSH=t.SSH
+        GROUP BY t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
+        ORDER BY yjcs DESC
+        ) where rownum &lt;51
+    </select>
+</mapper>
