@@ -79,14 +79,26 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<BooksRanking> topRanking() {
-        return libraryDao.categoryRanking(null);
+    public PageInfo<BooksRanking> topRanking(Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
+        PageHelper.startPage(startNum, 8);
+        List<BooksRanking> list = libraryDao.categoryRanking(null);
+        PageInfo<BooksRanking> info = new PageInfo<>(list, 5);
+
+        return info;
     }
 
     @Override
-    public List<BooksRanking> categoryRanking(String FLH) {
+    public PageInfo<BooksRanking> categoryRanking(String FLH, Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
         FLH = FLH.toUpperCase();
+        PageHelper.startPage(startNum, 8);
+
         List<BooksRanking> list = libraryDao.categoryRanking(FLH);
-        return list;
+        PageInfo<BooksRanking> info = new PageInfo<>(list, 5);
+
+        return info;
     }
 }

@@ -120,11 +120,11 @@ public class LibraryController {
      *
      * @return
      */
-    @RequestMapping(value = "/topRanking", method = RequestMethod.GET)
+    @RequestMapping(value = "/topRanking/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result topRanking() {
-        List<BooksRanking> list = libraryService.topRanking();
-        if (list.size() != 0) {
+    public Result topRanking(@PathVariable(value = "page") Integer page) {
+        PageInfo<BooksRanking> list = libraryService.topRanking(page);
+        if (list.getList().size() != 0) {
             return ResultUtil.success("查询成功", list);
         }
         return ResultUtil.error("查询失败了...");
@@ -136,11 +136,11 @@ public class LibraryController {
      * @param FLH
      * @return
      */
-    @RequestMapping(value = "/categoryRanking/{FLH}", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoryRanking/{FLH}/{page}", method = RequestMethod.GET)
     @ResponseBody
-    public Result categoryRanking(@PathVariable("FLH") String FLH) {
-        List<BooksRanking> list = libraryService.categoryRanking(FLH);
-        if (list.size() != 0) {
+    public Result categoryRanking(@PathVariable("FLH") String FLH, @PathVariable(value = "page") Integer page) {
+        PageInfo<BooksRanking> list = libraryService.categoryRanking(FLH, page);
+        if (list.getList().size() != 0) {
             return ResultUtil.success("查询成功", list);
         }
         return ResultUtil.error("查询失败了...");
