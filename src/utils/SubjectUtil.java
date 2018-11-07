@@ -13,7 +13,7 @@ public class SubjectUtil {
 
     private  final  static int WEEK_LENGTH = 7;  //一个星期的天数
     private  final  static int SECTION_LENGTH = 11;  //一天拥有的节数
-    private  final  static int SECTION_SUBJECT_LENGTH = 2;// 一节中 可能出现多少节课
+    private  final  static int SECTION_SUBJECT_LENGTH = 2;// 一节中 可能出现多少种课
 
     /**
      *  处理 数据
@@ -98,12 +98,9 @@ public class SubjectUtil {
      * */
     public static List<List<List<Subject>>>  createWeekList ( ) {
         List<List<List<Subject>>> weekList = new ArrayList(WEEK_LENGTH);   //  从 0 -- 6 表示 星期一  到 星期天
-//        Subject paddingSubject = new Subject("","","","","","","","","","","");
-//        Subject paddingSubject = null;
         for (int i = 0; i< WEEK_LENGTH; i++){
             List<List<Subject>> paddingSectionList  = new ArrayList<>();
             for (int j = 0; j< SECTION_LENGTH; j++){// 从 0 -- 10 表示 1  到 11 节课
-//                paddingSectionList.add(getPaddingList(paddingSubject,1));
                 paddingSectionList.add(new ArrayList<Subject>(SECTION_SUBJECT_LENGTH));
             }
             weekList.add(paddingSectionList);
