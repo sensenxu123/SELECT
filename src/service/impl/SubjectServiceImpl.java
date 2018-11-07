@@ -1,6 +1,5 @@
 package service.impl;
 
-import com.github.pagehelper.util.StringUtil;
 import dao.SubjectDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +26,18 @@ public class SubjectServiceImpl implements SubjectService {
      */
     public List<List<List<Subject>>> findSubjectByXHAndXQDM(String XH, String XQDM) {
 
-        if (StringUtils.isEmpty(XQDM)) {
-            XQDM = findXQDMNew(); //查询出最新的学期
-        }
+        String NewXQDM = findXQDMNew(); //查询出最新的学期
 
-        List<Subject> subjectList = subjectDao.findSubjetByXHAndXQDM(XH, XQDM);
+        List<Subject> subjectList = null;
+
+        if (StringUtils.isEmpty(XQDM) || XQDM.equals(NewXQDM)) {
+            XQDM = NewXQDM;
+            subjectList = subjectDao.findSubjetByXHAndXQDM(XH, XQDM);
+        }else {
+            subjectList = subjectDao.findZDSubjetByXHAndXQDM(XH, XQDM);
+            List<Subject> zxSubjetByXHAndXQDM = subjectDao.findZXSubjetByXHAndXQDM(XH, XQDM);
+            subjectList.addAll(zxSubjetByXHAndXQDM);
+        }
 
         //        对结果进行遍历并进行处理
         return SubjectUtil.processData(subjectList);

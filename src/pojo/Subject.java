@@ -6,7 +6,7 @@ import java.io.Serializable;
  *   科目实体
  *          用于封装，课程的一些信息
  * */
-public class Subject implements Serializable {
+public class Subject implements Serializable,Comparable<Subject> {
 
     private    String    XSXM    ;     //学生姓名
     private    String    KCMC    ;     //课程名称
@@ -18,13 +18,13 @@ public class Subject implements Serializable {
     private    String    JSXM    ;        //教师姓名
     private    String    JSGH    ;        //教师工号
     private    String    SKJSMC    ;      //上课教室名称
-    private    String    SKJSDM    ;   //上课教室代码
-
+    private    String    SKJSDM    ;      //上课教室代码
+    private    String    CZLX      ;      //  I   U   D
 
     public Subject() {
     }
 
-    public Subject(String XSXM, String KCMC, String ZZT, String XQJ, String KSJC, String JSJC, String KSSJ, String JSXM, String JSGH, String SKJSMC, String SKJSDM) {
+    public Subject(String XSXM, String KCMC, String ZZT, String XQJ, String KSJC, String JSJC, String KSSJ, String JSXM, String JSGH, String SKJSMC, String SKJSDM,String CZLX) {
         this.XSXM = XSXM;
         this.KCMC = KCMC;
         this.ZZT = ZZT;
@@ -36,6 +36,15 @@ public class Subject implements Serializable {
         this.JSGH = JSGH;
         this.SKJSMC = SKJSMC;
         this.SKJSDM = SKJSDM;
+        this.CZLX = CZLX;
+    }
+
+    public String getCZLX() {
+        return CZLX;
+    }
+
+    public void setCZLX(String CZLX) {
+        this.CZLX = CZLX;
     }
 
     public String getXSXM() {
@@ -124,5 +133,56 @@ public class Subject implements Serializable {
 
     public void setSKJSDM(String SKJSDM) {
         this.SKJSDM = SKJSDM;
+    }
+
+
+    /**
+     *  比较函数：  0  与 非0
+     * */
+    public int compareTo(Subject o) {
+        int result = 1;  // 1.表示不同
+        if(o == null) {
+            return  result;  //表示不相同
+        }
+        if(!this.KCMC.equals(o.getKCMC())) {
+            return  result;
+        }
+        if(!this.XQJ.equals(o.getXQJ())) {
+            return  result;
+        }
+        if(!this.KSJC.equals(o.getKSJC())) {
+            return  result;
+        }
+        if(!this.JSJC.equals(o.getJSJC())) {
+            return  result;
+        }
+//        if(!this.ZZT.equals(o.getZZT())) {
+//            return  result;
+//        }
+        if(!this.SKJSDM.equals(o.getSKJSDM())) {
+            return  result;
+        }
+        if(!this.JSGH.equals(o.getJSGH())) {
+            return  result;
+        }
+        return 0;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "XSXM='" + XSXM + '\'' +
+                ", KCMC='" + KCMC + '\'' +
+                ", ZZT='" + ZZT + '\'' +
+                ", XQJ='" + XQJ + '\'' +
+                ", KSJC='" + KSJC + '\'' +
+                ", JSJC='" + JSJC + '\'' +
+                ", KSSJ='" + KSSJ + '\'' +
+                ", JSXM='" + JSXM + '\'' +
+                ", JSGH='" + JSGH + '\'' +
+                ", SKJSMC='" + SKJSMC + '\'' +
+                ", SKJSDM='" + SKJSDM + '\'' +
+                '}';
     }
 }

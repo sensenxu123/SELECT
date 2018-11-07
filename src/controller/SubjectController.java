@@ -92,7 +92,7 @@ public class SubjectController {
     /**
      *  查询学年
      * */
-    @RequestMapping("/findXNJonP")  //TODO 未测
+    @RequestMapping("/findXNJonP")
     public String findXN(String jsonpCallback){
         Result result = null;
         try {

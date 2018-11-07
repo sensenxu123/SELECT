@@ -11,14 +11,24 @@ import java.util.List;
 public interface SubjectDao {
 
     /**
-     *  查询课表
+     *  查询自选课
      * */
     public List<Subject> findSubjetByXHAndXQDM(@Param("XH") String XH,@Param("XQDM") String XQDM);
+
+    /**
+     *  查询指定课程
+     * */
+    public List<Subject> findZDSubjetByXHAndXQDM(@Param("XH") String XH,@Param("XQDM") String XQDM);
 
     /**
      *  查询学期代码
      * */
     public List<String> findXQDM();
 
+
+    /**
+     *  查询选修课
+     * */
+    public List<Subject> findZXSubjetByXHAndXQDM(@Param("XH") String XH,@Param("XQDM") String XQDM) ;
 
 }

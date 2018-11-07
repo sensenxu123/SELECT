@@ -4,16 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dao.SubjectDao">
 
-    <!-- 根据学号  与  学期  查询 课表    :  注意:oracle  需要指定  表空间 -->
+    <!-- 根据学号  与  学期  查询 课表（指定）    :  注意:oracle  需要指定  表空间 -->
     <select id="findSubjetByXHAndXQDM"    resultType="pojo.Subject">
         SELECT
-            XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM
+            XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,CZLX
         FROM
           "USR_ZSJ"."T_KBAP"  kbap,
           ( SELECT XKKH, KCMC, XSXM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
        WHERE
-	      KCXH = XKKH
+	      KCXH = XKKH    ORDER BY ZZT  DESC
     </select>
+
+    <select id="findZDSubjetByXHAndXQDM"    resultType="pojo.Subject">
+        SELECT
+        XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,CZLX
+        FROM
+        "USR_ZSJ"."T_KBAP"  kbap,
+        ( SELECT XKKH, KCMC, XSXM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
+        WHERE
+        KCXH = XKKH   AND  CZLX = 'U'  ORDER BY ZZT DESC
+    </select>
+
+    <!-- 根据学号  与  学期  查询 课表 (自选)    :  注意:oracle  需要指定  表空间 -->
+    <select id="findZXSubjetByXHAndXQDM"    resultType="pojo.Subject">
+       SELECT
+	      XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,CZLX
+      FROM
+	     "USR_ZSJ"."T_KBAP"  kbap,
+    	( SELECT XKKH,KCMC,XSXM,XKFSDM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
+      WHERE
+	      KCXH = XKKH
+	      AND CZLX = 'I'
+          ORDER BY  ZZT DESC
+    </select>
+
 
 
     <!--  查询学期 -->

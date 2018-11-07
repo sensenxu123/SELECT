@@ -25,6 +25,9 @@ public class SubjectUtil {
             return null;
         }
 
+//       调用方法除去重复数据
+        subjectList = nodup(subjectList);
+
 //      创建weekList,并封装数据
         List<List<List<Subject>>> weekList = createWeekList();
 
@@ -42,9 +45,8 @@ public class SubjectUtil {
                  subject.setZZT(disposeZZT(subject.getZZT())); //处理  Subject的信息
 
                  for (int m = 0;m<=sectionNum ;m++ ){
-                    List<Subject> subjects = lists.get(j+m);  //动态的遍历 节List 里的数据,获取 j+m 节里的 subjectList
-                     //调用方法对ZZT的数据进行处理
-                     subjects.add(subject);
+                     List<Subject> subjects = lists.get(j+m);  //动态的遍历 节List 里的数据,获取 j+m 节里的 subjectList
+                     add(subjects,subject);
                  }
 
              }catch (Exception e){
@@ -55,6 +57,63 @@ public class SubjectUtil {
 
         return weekList;
 
+    }
+
+
+    /**
+     * 添加数据
+     * */
+    public static void add(List<Subject> subjects,Subject subject) {
+        int repeat = repeat(subjects, subject);
+        if( repeat != -1 ) {
+            //判断当期前的内容是否为
+            if("U".equals(subject.getCZLX())) {
+                //删除原有数据，添加新数据
+                subjects.remove(repeat);
+                subjects.add(subject);
+            }
+        }else {
+            subjects.add(subject);
+        }
+    }
+
+    /**
+     * 判断是否重复 ,没有重复返回负数，重复返回数据索引
+     * */
+    public static  <T extends  Comparable<? super  T>> int  repeat (List<T>  subjects ,T subject) {
+
+        int result = -1;
+
+        if(subjects == null || subjects.size() ==0 || subject == null) {
+            return result;
+        }
+
+        for (int i = 0 ;i<subjects.size();i++) {
+            if( subjects.get(i).compareTo(subject)== 0){
+                return i;
+            }
+        }
+        return  result;
+    }
+
+    /**
+     *  除去重复数据
+     * */
+    public  static List<Subject> nodup(List<Subject> subjectList) {
+
+        if(subjectList == null) {
+            return  subjectList;
+        }
+        for (int i=1;i<subjectList.size();i++){
+            for (int j = i-1 ; j >=0 ;j--){
+                int compare = subjectList.get(i).compareTo(subjectList.get(j));
+                if(compare == 0) {
+                    subjectList.remove(i--);
+                    break;
+                }
+            }
+        }
+        return  subjectList;
     }
 
     /**
@@ -148,21 +207,6 @@ public class SubjectUtil {
             default: throw  new Exception("课程所在星期数有误");
         }
         return  i;
-    }
-
-    /**
-     *  填充无效数据
-     *  获取指定长度的，填充了指定类型数据的集合
-     * */
-    public    static  <T>  List<T> getPaddingList(T padding,int size) {
-
-        List<T> paddingList = new ArrayList<>(size);
-
-        for (int i = 0;i<size;i++){
-            paddingList.add(padding);
-        }
-
-        return  paddingList;
     }
 
 }
