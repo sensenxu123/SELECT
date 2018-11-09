@@ -22,16 +22,17 @@
 
     <select id="selectRecord"
             resultType="pojo.Record" >
-    SELECT
-	  JYLX,
-	  JYSJ,
-	  SHMC,
-	  JYE
-    FROM
-	  "USR_ZSJ"."CARDFLOW"
-    WHERE
-	  to_char( to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' ), 'yyyy-mm' ) = to_char( SYSDATE, 'yyyy-mm' )
-	AND XGH=#{xgh} order by cjsj desc
+    select
+    JYLX,
+    JYSJ,
+ 	SHMC,
+ 	JYE
+    from "USR_ZSJ"."CARDFLOW"
+    where
+    to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' )
+    >= trunc(sysdate - 5)
+    AND XGH=#{xgh}
+    ORDER BY CJSJ DESC
     </select>
 
     <select id="selectByPageAndSelections"
@@ -46,6 +47,8 @@
     WHERE
 	  to_char( to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' ), 'yyyy-mm' ) = to_char( SYSDATE, 'yyyy-mm' )
 	AND XGH=#{xgh} order by cjsj desc
+
+
     </select>
 
 
