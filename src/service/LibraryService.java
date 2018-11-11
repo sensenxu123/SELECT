@@ -19,8 +19,8 @@ public interface LibraryService {
 
     List<Book> findBookBySSH(String SSH);
 
-    List<BooksRanking> topRanking();
+    PageInfo<BooksRanking> topRanking(Integer startNum);
 
-    List<BooksRanking> categoryRanking(String FLH);
+    PageInfo<BooksRanking> categoryRanking(String FLH, Integer startNum);
 
 }

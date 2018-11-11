@@ -18,11 +18,11 @@
 
     </select>
 
-    <!--默认查询当前月的消费明细-->
 
-    <select id="selectRecord"
+
+    <select id="selectByPageAndSelections"
             resultType="pojo.Record" >
-    select
+   select
     JYLX,
     JYSJ,
  	SHMC,
@@ -33,20 +33,6 @@
     >= trunc(sysdate - 5)
     AND XGH=#{xgh}
     ORDER BY CJSJ DESC
-    </select>
-
-    <select id="selectByPageAndSelections"
-            resultType="pojo.Record" >
-    SELECT
-	  JYLX,
-	  JYSJ,
-	  SHMC,
-	  JYE
-    FROM
-	  "USR_ZSJ"."CARDFLOW"
-    WHERE
-	  to_char( to_date( CJSJ, 'yyyy-mm-dd hh24:mi:ss' ), 'yyyy-mm' ) = to_char( SYSDATE, 'yyyy-mm' )
-	AND XGH=#{xgh} order by cjsj desc
 
 
     </select>
@@ -73,7 +59,7 @@
 
     <select id="checkLogin"
             resultType="pojo.User" >
-       select XGH,SFZ FROM "USR_ZSJ"."CARDINFO" where XGH=#{xgh}
+       select XGH,SFZ,XM FROM "USR_ZSJ"."CARDINFO" where XGH=#{xgh}
     </select>
 
 </mapper>
