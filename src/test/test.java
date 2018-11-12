@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.Test;
+import utils.HttpClientUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
