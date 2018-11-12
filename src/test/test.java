@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.Test;
+import utils.HttpClientUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

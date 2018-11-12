@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pojo.*;
 import service.LibraryService;
+import utils.HttpClientUtil;
 import utils.JsonUtils;
 import utils.ResultUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -55,7 +57,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
     }
 
     /**
@@ -74,7 +76,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
     }
 
     /**
@@ -93,7 +95,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";
     }
 
     /**
@@ -112,7 +114,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
     }
 
     /**
@@ -131,7 +133,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
     }
 
     /**
@@ -149,7 +151,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
     }
 
     /**
@@ -168,6 +170,18 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
+    }
+
+    @RequestMapping(value = "/introduce/{isbn}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
+    @ResponseBody
+    public String introduce(@PathVariable("isbn") String isbn, String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            String url = "http://222.195.118.20:8080/opac/ajax_douban.php?isbn=" + isbn.replaceAll("-", "");
+            String result = HttpClientUtil.sendGet(url);
+
+            return callback + "(" + result + ")";
+        }
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
     }
 }
