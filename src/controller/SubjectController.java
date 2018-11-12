@@ -38,7 +38,7 @@ public class SubjectController {
         }catch (Exception e){
             result = Result.build(Result.ERROR_STATUS_CODE,"课表查询失败");
         }
-        long l2 = System.currentTimeMillis();
+
         return  result;
     }
 
