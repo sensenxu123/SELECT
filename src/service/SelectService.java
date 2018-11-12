@@ -9,7 +9,6 @@ import java.util.List;
 public interface SelectService {
     CardFlow selectYe(String xgh);
 
-    List<Record> selectRecord(String xgh);
 
     List<Record> selectByPageAndSelections(String xgh);
 

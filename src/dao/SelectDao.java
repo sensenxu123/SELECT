@@ -10,7 +10,6 @@ import java.util.List;
 public interface SelectDao {
     CardFlow selectYe(String xgh);
 
-    List<Record> selectRecord(String xgh);
 
     List<Record> selectByPageAndSelections(String xgh);
 

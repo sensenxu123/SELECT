@@ -22,5 +22,11 @@ public class test {
         String pwd = cellphone.substring(cellphone.length() - 6);
         System.out.println(pwd);
     }
+    @Test
+    public  void test2(){
+        String YE="99";
+        float pwd = Integer.parseInt(YE)/100.00f;
+        System.out.println(pwd+"");
+    }
 
 }

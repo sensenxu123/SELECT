@@ -3,6 +3,16 @@ package pojo;
 public class User {
     //学工号
     private String XGH;
+    private String XM;
+
+    public String getXM() {
+        return XM;
+    }
+
+    public void setXM(String XM) {
+        this.XM = XM;
+    }
+
     //身份证
     private String SFZ;
     //密码（截取身份证后六位）
