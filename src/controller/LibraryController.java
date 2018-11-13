@@ -34,7 +34,7 @@ public class LibraryController {
             if (user == null) {
                 return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("用户名或密码不正确")) + ")";
             }
-            return  callback + "(" + JsonUtils.objectToJson(JsonUtils.objectToJson(ResultUtil.success("登陆成功",user))) + ")";
+            return  callback + "(" + JsonUtils.objectToJson(ResultUtil.success("登陆成功",user)) + ")";
         }
         return null;
     }
@@ -171,6 +171,13 @@ public class LibraryController {
         return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
     }
 
+
+    /**
+     * 图书简介
+     * @param isbn
+     * @param callback
+     * @return
+     */
     @RequestMapping(value = "/introduce/{isbn}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
     @ResponseBody
     public String introduce(@PathVariable("isbn") String isbn, String callback) {

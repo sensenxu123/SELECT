@@ -83,7 +83,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (startNum == null)
             startNum = 1;
         PageHelper.startPage(startNum, 8);
-        List<BooksRanking> list = libraryDao.categoryRanking(null);
+        List<BooksRanking> list = libraryDao.topRanking();
         PageInfo<BooksRanking> info = new PageInfo<>(list, 5);
 
         return info;
