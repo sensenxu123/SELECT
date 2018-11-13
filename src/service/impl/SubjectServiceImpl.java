@@ -40,24 +40,11 @@ public class SubjectServiceImpl implements SubjectService {
             XQDM = findXQDMNew(); //查询出最新的学期
         }
         //根据XH查询身份信息
-//        BaseUser baseUser = subjectDao.findUserByXGH(XH);
-
-//        if (baseUser == null){
-//            throw new RuntimeException("学号不存在");
-//        }
         if ( baseUser.getSFMC().equals(USER_SFMC_TEACHER)){
             subjectList = subjectDao.findSubjetByXGHAndXQDM(baseUser.getXGH(),XQDM); // 此时，XH 中存放是老师的XGH
         }else {
             subjectList = subjectDao.findSubjetByXHAndXQDM(baseUser.getXGH(),XQDM);
         }
-
-////            XQDM = NewXQDM;
-//           subjectList = subjectDao.findSubjetByXHAndXQDM(XH, XQDM);
-//        }else {
-//            subjectList = subjectDao.findSubjetByXHAndXQDMAndCZLX(XH, XQDM,"I");
-//            List<Subject> zxSubjetByXHAndXQDM = subjectDao.findSubjetByXHAndXQDMAndCZLX(XH, XQDM,"U");
-//            subjectList.addAll(zxSubjetByXHAndXQDM);
-//        }
 
         //        对结果进行遍历并进行处理
         return SubjectUtil.processData(subjectList);
