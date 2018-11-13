@@ -46,12 +46,12 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
-    public String currentBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
+    public String currentBorrow(@PathVariable("XH") String SFRZH,String callback) {
         if (StringUtils.isNotBlank(callback)) {
-            PageInfo<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH, page);
-            if (list.getList().size() != 0) {
+            List<CurrentBorrow> list = libraryService.getCurrentBorrow(SFRZH);
+            if (list.size() != 0) {
                 return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
@@ -65,12 +65,12 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/borrow/{XH}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
-    public String historyBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
+    public String historyBorrow(@PathVariable("XH") String SFRZH,String callback) {
         if (StringUtils.isNotBlank(callback)) {
-            PageInfo<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH, page);
-            if (list.getList().size() != 0) {
+            List<HistoryBorrow> list = libraryService.getHistoryBorrow(SFRZH);
+            if (list.size() != 0) {
                 return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
