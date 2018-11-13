@@ -21,5 +21,4 @@ public class test {
         String pwd = cellphone.substring(cellphone.length() - 6);
         System.out.println(pwd);
     }
-
 }
