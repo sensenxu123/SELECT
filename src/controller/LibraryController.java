@@ -12,7 +12,6 @@ import utils.HttpClientUtil;
 import utils.JsonUtils;
 import utils.ResultUtil;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -27,7 +26,7 @@ public class LibraryController {
      * @param bookUser
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/login", produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String login(BookUser bookUser,String callback) {
         if (StringUtils.isNotBlank(callback)) {

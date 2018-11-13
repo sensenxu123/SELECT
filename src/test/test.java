@@ -1,19 +1,20 @@
 package test;
 
 import org.junit.Test;
-import utils.HttpClientUtil;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import service.LibraryService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RunWith(SpringJUnit4ClassRunner.class)//表示整合JUnit4进行测试
+@ContextConfiguration(locations={"classpath:applicationContext-dao.xml"})//加载spring配置文件
 public class test {
+    @Autowired
+    private LibraryService libraryService;
     @Test
     public void test(){
         Date date = new Date();
@@ -35,65 +36,4 @@ public class test {
         float pwd = Integer.parseInt(YE)/100.00f;
         System.out.println(pwd+"");
     }
-
-    @Test
-    public void test3() {
-        HttpURLConnection connection = null;
-        InputStream is = null;
-        BufferedReader br = null;
-        String result = null;// 返回结果字符串
-        try {
-            // 创建远程url连接对象
-            URL url = new URL("http://222.195.118.20:8080/opac/ajax_douban.php?isbn=9787115433145");
-            // 通过远程url连接对象打开一个连接，强转成httpURLConnection类
-            connection = (HttpURLConnection) url.openConnection();
-            // 设置连接方式：get
-            connection.setRequestMethod("GET");
-            // 设置连接主机服务器的超时时间：15000毫秒
-            connection.setConnectTimeout(15000);
-            // 设置读取远程返回的数据时间：60000毫秒
-            connection.setReadTimeout(60000);
-            // 发送请求
-            connection.connect();
-            // 通过connection连接，获取输入流
-            if (connection.getResponseCode() == 200) {
-                is = connection.getInputStream();
-                // 封装输入流is，并指定字符集
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                // 存放数据
-                StringBuffer sbf = new StringBuffer();
-                String temp = null;
-                while ((temp = br.readLine()) != null) {
-                    sbf.append(temp);
-                    sbf.append("\r\n");
-                }
-                result = sbf.toString();
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            // 关闭资源
-            if (null != br) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (null != is) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            connection.disconnect();// 关闭远程连接
-        }
-        System.out.println(result);
-    }
-
 }
