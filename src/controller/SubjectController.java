@@ -104,7 +104,6 @@ public class SubjectController {
         if (!StringUtils.isEmpty(jsonpCallback)){
             return jsonpCallback+"(" + JsonUtils.objectToJson(result) +")";
         }
-
         return JsonUtils.objectToJson(result);
     }
 

@@ -3,13 +3,16 @@ package controller;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pojo.*;
 import service.LibraryService;
+import utils.HttpClientUtil;
 import utils.JsonUtils;
 import utils.ResultUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -24,7 +27,7 @@ public class LibraryController {
      * @param bookUser
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String login(BookUser bookUser,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -43,7 +46,7 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.GET)
+    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String currentBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -53,7 +56,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("没有正在看的书呢,快去找本看看吧!")) + ")";
     }
 
     /**
@@ -62,7 +65,7 @@ public class LibraryController {
      * @param SFRZH
      * @return
      */
-    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.POST)
+    @RequestMapping(value = "/borrow/{XH}/{page}", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String historyBorrow(@PathVariable("XH") String SFRZH,@PathVariable(value = "page") Integer page,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -72,7 +75,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到借过的书?!")) + ")";
     }
 
     /**
@@ -81,7 +84,7 @@ public class LibraryController {
      * @param SSH
      * @return
      */
-    @RequestMapping(value = "/findBookStatus", method = RequestMethod.GET)
+    @RequestMapping(value = "/findBookStatus", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String findBookStatus(@RequestParam("SSH") String SSH,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -91,7 +94,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";
     }
 
     /**
@@ -100,7 +103,7 @@ public class LibraryController {
      * @param TM
      * @return
      */
-    @RequestMapping(value = "/findBookByName/{TM}/{page}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findBookByName/{TM}/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String findBookByName(@PathVariable("TM") String TM,@PathVariable(value = "page") Integer page,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -110,7 +113,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
     }
 
     /**
@@ -119,7 +122,7 @@ public class LibraryController {
      * @param SSH
      * @return
      */
-    @RequestMapping(value = "/findBookBySSH", method = RequestMethod.GET)
+    @RequestMapping(value = "/findBookBySSH", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String findBookBySSH(@RequestParam("SSH") String SSH,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -129,7 +132,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("找不到想要的书...")) + ")";
     }
 
     /**
@@ -137,7 +140,7 @@ public class LibraryController {
      *
      * @return
      */
-    @RequestMapping(value = "/topRanking/{page}", method = RequestMethod.GET)
+    @RequestMapping(value = "/topRanking/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String topRanking(@PathVariable(value = "page") Integer page,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -147,7 +150,7 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
     }
 
     /**
@@ -156,7 +159,7 @@ public class LibraryController {
      * @param FLH
      * @return
      */
-    @RequestMapping(value = "/categoryRanking/{FLH}/{page}", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoryRanking/{FLH}/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
     public String categoryRanking(@PathVariable("FLH") String FLH, @PathVariable(value = "page") Integer page,String callback) {
         if (StringUtils.isNotBlank(callback)) {
@@ -166,6 +169,18 @@ public class LibraryController {
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
         }
-        return null;
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
+    }
+
+    @RequestMapping(value = "/introduce/{isbn}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
+    @ResponseBody
+    public String introduce(@PathVariable("isbn") String isbn, String callback) {
+        if (StringUtils.isNotBlank(callback)) {
+            String url = "http://222.195.118.20:8080/opac/ajax_douban.php?isbn=" + isbn.replaceAll("-", "");
+            String result = HttpClientUtil.sendGet(url);
+
+            return callback + "(" + result + ")";
+        }
+        return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("查询失败了...")) + ")";
     }
 }
