@@ -91,7 +91,7 @@
     </select>-->
 
     <!--查询前50条借阅排行 可按照分类 或 默认全局结束次数排序-->
-    <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
+    <!--<select id="categoryRanking" resultType="BooksRanking" parameterType="String">
         SELECT TM,CBSMC,DYZZ,SSH,YJCS FROM
         (
         SELECT t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
@@ -116,6 +116,9 @@
         GROUP BY t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
         ORDER BY yjcs DESC
         ) where rownum &lt; 51
+    </select>-->
+    <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
+        select TM,CBSMC,DYZZ,SSH from (select TM,CBSMC,DYZZ,SSH from "USR_ZSJ"."T_TS" where FLH=#{FLH} GROUP BY TM,CBSMC,DYZZ,SSH) where rownum &lt; 1001
     </select>
 
     <select id="topRanking" resultType="BooksRanking">
