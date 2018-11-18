@@ -118,7 +118,7 @@
         ) where rownum &lt; 51
     </select>-->
     <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
-        select TM,CBSMC,DYZZ,SSH from (select TM,CBSMC,DYZZ,SSH from "USR_ZSJ"."T_TS" where FLH=#{FLH} GROUP BY TM,CBSMC,DYZZ,SSH) where rownum &lt; 1001
+        select TM,DYZZ,ISBN,CBRQ,SSH from (select TM,DYZZ,ISBN,CBRQ,SSH from "USR_ZSJ"."T_TS" where FLH=#{FLH} GROUP BY TM,DYZZ,ISBN,CBRQ,SSH ORDER BY CBRQ desc) where rownum &lt; 1001
     </select>
 
     <select id="topRanking" resultType="BooksRanking">
