@@ -83,12 +83,12 @@ public class LibraryController {
      * @param SSH
      * @return
      */
-    @RequestMapping(value = "/findBookStatus", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
+    @RequestMapping(value = "/findBookStatus/{page}", method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
-    public String findBookStatus(@RequestParam("SSH") String SSH,String callback) {
+    public String findBookStatus(@PathVariable("page") Integer page, @RequestParam("SSH") String SSH, String callback) {
         if (StringUtils.isNotBlank(callback)) {
-            List<Book> list = libraryService.findBookStatus(SSH);
-            if (list.size() != 0) {
+            PageInfo<Book> list = libraryService.findBookStatus(SSH, page);
+            if (list.getList().size() != 0) {
                 return callback + "(" + JsonUtils.objectToJson(ResultUtil.success("查询成功", list)) + ")";
             }
             return callback + "(" + JsonUtils.objectToJson(ResultUtil.error("书本掉到代码池里去了...")) + ")";

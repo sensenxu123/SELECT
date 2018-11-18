@@ -13,7 +13,7 @@ public interface LibraryService {
 
     List<HistoryBorrow> getHistoryBorrow(String SFRZH);
 
-    List<Book> findBookStatus(String SSH);
+    PageInfo<Book> findBookStatus(String SSH,Integer startNum);
 
     PageInfo<Book> findBookByName(String TM, Integer startNum);
 

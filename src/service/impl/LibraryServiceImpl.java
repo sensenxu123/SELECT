@@ -46,9 +46,14 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<Book> findBookStatus(String SSH) {
+    public PageInfo<Book> findBookStatus(String SSH,Integer startNum) {
+        if (startNum == null)
+            startNum = 1;
+        PageHelper.startPage(startNum, 5);
         List<Book> list = libraryDao.findOneBookBorrowStatus(SSH);
-        return list;
+        PageInfo<Book> info = new PageInfo<>(list, 3);
+
+        return info;
     }
 
     @Override
