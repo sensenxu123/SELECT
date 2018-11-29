@@ -40,7 +40,7 @@
         <result property="CBSMC" column="CBSMC"/>
         <result property="CBRQ" column="CBRQ"/>
         <result property="DYZZ" column="DYZZ"/>
-        <result property="GCDDM" column="GCDDM"/>
+        <result property="GCDMC" column="GCDMC"/>
         <result property="JG" column="JG"/>
         <result property="SSH" column="SSH"/>
         <result property="WXLX" column="WXLX"/>
@@ -78,7 +78,7 @@
     
     <!--最近3个月热门排行-->
     <!--现在已经废弃-->
-    <select id="topRanking" resultType="BooksRanking">
+    <!--<select id="topRanking" resultType="BooksRanking">
         SELECT
         a.TSMC as TM,a.SSH,nvl(a.a,0)+nvl(b.b,0) AS YJCS
         FROM
@@ -88,13 +88,11 @@
         on
         a.TSMC = b.TSMC
         order by yjcs DESC
-    </select>
+    </select>-->
 
     <!--查询前50条借阅排行 可按照分类 或 默认全局结束次数排序-->
-    <!--这是开发者干掉半条命写出来的SQL-->
-    <!--请接好!并敬重!-->
-    <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
-        SELECT * FROM
+    <!--<select id="categoryRanking" resultType="BooksRanking" parameterType="String">
+        SELECT TM,CBSMC,DYZZ,SSH,YJCS FROM
         (
         SELECT t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
         FROM "USR_ZSJ"."T_TS" t
@@ -114,6 +112,47 @@
         <if test="FLH!=null">
             t.FLH= #{FLH} AND
         </if>
+        c.SSH=t.SSH
+        GROUP BY t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
+        ORDER BY yjcs DESC
+        ) where rownum &lt; 51
+    </select>-->
+    <select id="categoryRanking" resultType="BooksRanking" parameterType="String">
+        select TM,DYZZ,ISBN,CBRQ,SSH from (select TM,DYZZ,ISBN,CBRQ,SSH from "USR_ZSJ"."T_TS" where FLH=#{FLH} GROUP BY TM,DYZZ,ISBN,CBRQ,SSH ORDER BY CBRQ desc) where rownum &lt; 1001
+    </select>
+
+    <select id="topRanking" resultType="BooksRanking">
+        SELECT TM,CBSMC,DYZZ,SSH,YJCS FROM
+        (
+        SELECT t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
+        FROM "USR_ZSJ"."T_TS" t
+        INNER JOIN
+        (
+            SELECT
+            a.SSH,nvl(a.a,0)+nvl(b.b,0) AS YJCS
+            FROM
+            (
+                SELECT * FROM
+                (
+                    SELECT SSH,count(*) as a FROM "USR_ZSJ"."T_TS_JYLS" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd')
+                    FROM dual
+                    ) GROUP BY SSH ORDER BY count(*) desc
+                )WHERE rownum &lt; 401
+            ) a
+            FULL JOIN
+            (
+                SELECT * FROM
+                (
+                    SELECT SSH,count(*) as b FROM "USR_ZSJ"."T_TS_JY" WHERE JSRQ > (SELECT to_char(sysdate-90,'yyyy-mm-dd')
+                    FROM dual
+                    ) GROUP BY SSH ORDER BY count(*) desc
+                )WHERE rownum &lt; 401
+            ) b
+            on
+                a.SSH = b.SSH
+                order by yjcs DESC
+        ) c
+        ON
         c.SSH=t.SSH
         GROUP BY t.TM,t.CBSMC,t.DYZZ,t.SSH,c.YJCS
         ORDER BY yjcs DESC

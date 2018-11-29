@@ -34,29 +34,26 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public PageInfo<CurrentBorrow> getCurrentBorrow(String SFRZH, Integer startNum) {
-        if (startNum == null)
-            startNum = 1;
-        PageHelper.startPage(startNum, 8);
+    public List<CurrentBorrow> getCurrentBorrow(String SFRZH) {
         List<CurrentBorrow> list = libraryDao.findCurrentBorrowBySFRZH(SFRZH);
-        PageInfo<CurrentBorrow> info = new PageInfo<>(list, 5);
-        return info;
+        return list;
     }
 
     @Override
-    public PageInfo<HistoryBorrow> getHistoryBorrow(String SFRZH, Integer startNum) {
+    public List<HistoryBorrow> getHistoryBorrow(String SFRZH) {
+        List<HistoryBorrow> list = libraryDao.findHistoryBorrowBySFRZH(SFRZH);
+        return list;
+    }
+
+    @Override
+    public PageInfo<Book> findBookStatus(String SSH,Integer startNum) {
         if (startNum == null)
             startNum = 1;
-        PageHelper.startPage(startNum, 8);
-        List<HistoryBorrow> list = libraryDao.findHistoryBorrowBySFRZH(SFRZH);
-        PageInfo<HistoryBorrow> info = new PageInfo<>(list, 5);
-        return info;
-    }
-
-    @Override
-    public List<Book> findBookStatus(String SSH) {
+        PageHelper.startPage(startNum, 5);
         List<Book> list = libraryDao.findOneBookBorrowStatus(SSH);
-        return list;
+        PageInfo<Book> info = new PageInfo<>(list, 3);
+
+        return info;
     }
 
     @Override
@@ -83,7 +80,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (startNum == null)
             startNum = 1;
         PageHelper.startPage(startNum, 8);
-        List<BooksRanking> list = libraryDao.categoryRanking(null);
+        List<BooksRanking> list = libraryDao.topRanking();
         PageInfo<BooksRanking> info = new PageInfo<>(list, 5);
 
         return info;

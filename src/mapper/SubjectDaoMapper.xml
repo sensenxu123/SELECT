@@ -12,10 +12,12 @@
           "USR_ZSJ"."T_KBAP"  kbap,
           ( SELECT XKKH, KCMC, XSXM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
        WHERE
-	      KCXH = XKKH    ORDER BY ZZT  DESC
+	      KCXH = XKKH
+	      AND CZLX IN ('I','U')
+	      ORDER BY ZZT  DESC
     </select>
 
-    <select id="findZDSubjetByXHAndXQDM"    resultType="pojo.Subject">
+    <select id="findUSubjetByXHAndXQDM"    resultType="pojo.Subject">
         SELECT
         XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,CZLX
         FROM
@@ -26,15 +28,15 @@
     </select>
 
     <!-- 根据学号  与  学期  查询 课表 (自选)    :  注意:oracle  需要指定  表空间 -->
-    <select id="findZXSubjetByXHAndXQDM"    resultType="pojo.Subject">
+    <select id="findSubjetByXHAndXQDMAndCZLX"    resultType="pojo.Subject">
        SELECT
 	      XSXM,  KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,CZLX
       FROM
 	     "USR_ZSJ"."T_KBAP"  kbap,
-    	( SELECT XKKH,KCMC,XSXM,XKFSDM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
+    	( SELECT XKKH,KCMC,XSXM FROM "USR_ZSJ"."XSXKXX" WHERE XH = #{XH} AND XQDM = #{XQDM} ) temp
       WHERE
 	      KCXH = XKKH
-	      AND CZLX = 'I'
+	      AND CZLX IN ('I','U')
           ORDER BY  ZZT DESC
     </select>
 
@@ -48,4 +50,28 @@
             "USR_ZSJ"."XSXKXX"
     </select>
 
+
+    <!--查询用户信息-->
+    <select id="findUserByXGH" resultType="pojo.BaseUser" >
+        SELECT
+	      XGH,SFMC,SFZ,XM
+        FROM
+	      "USR_ZSJ"."CARDINFO"
+        WHERE
+	      XGH = #{XGH}
+    </select>
+
+    <!--查询教师的课表 -->
+    <select id="findSubjetByXGHAndXQDM" resultType="pojo.Subject">
+	SELECT
+    DISTINCT
+		KCMC,  XQJ,  ZZT,  KSJC, JSJC, KSSJ, JSXM, JSGH,  SKJSMC, SKJSDM,temp.CZLX
+	from
+		"USR_ZSJ"."XSXKXX" xsxkxx,
+	    (SELECT   KCXH ,XQJ,ZZT,KSJC,JSJC,KSSJ,JSXM,JSGH,SKJSMC,SKJSDM,CZLX from  "USR_ZSJ"."T_KBAP" where JSGH =#{XGH} AND XQ=#{XQDM})	temp
+	where
+		XKKH = KCXH
+		AND temp.CZLX IN ('I','U')
+		ORDER BY  ZZT DESC
+    </select>
 </mapper>

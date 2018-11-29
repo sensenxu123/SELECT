@@ -9,11 +9,11 @@ public interface LibraryService {
 
     BookUser login(BookUser bookUser);
 
-    PageInfo<CurrentBorrow> getCurrentBorrow(String SFRZH, Integer startNum);
+    List<CurrentBorrow> getCurrentBorrow(String SFRZH);
 
-    PageInfo<HistoryBorrow> getHistoryBorrow(String SFRZH, Integer startNum);
+    List<HistoryBorrow> getHistoryBorrow(String SFRZH);
 
-    List<Book> findBookStatus(String SSH);
+    PageInfo<Book> findBookStatus(String SSH,Integer startNum);
 
     PageInfo<Book> findBookByName(String TM, Integer startNum);
 
